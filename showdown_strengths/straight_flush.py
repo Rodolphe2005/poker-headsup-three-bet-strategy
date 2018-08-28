@@ -1,7 +1,10 @@
 from typing import List
 
+from board import Board
 from card import Card
 from hand import Hand
+from showdown_strengths.flush import flush_of
+from showdown_strengths.straight import straight_of
 
 
 class StraightFlush:
@@ -15,11 +18,11 @@ class StraightFlush:
         return self.card == other.card
 
 
-def straight_flush_of(hand: Hand, board: List[Card]):
+def straight_flush_of(hand: Hand, board: Board):
     if flush_of(hand, board) is None or straight_of(hand, board) is None:
         return None
     else:
-        cards = [card for card in hand] + board.cards
+        cards = hand.cards + board.cards
         for card in cards:
             if all(card.decrease(i) in cards for i in range(1, 5)):
                 return StraightFlush(card)

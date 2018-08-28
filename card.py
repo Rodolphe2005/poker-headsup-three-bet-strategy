@@ -17,6 +17,10 @@ class Card:
     def __eq__(self, other):
         return self.number == other.number and self.suit == other.suit
 
+    def decrease(self, i):
+        new_number = self.number.decrease(i)
+        return Card(new_number.name + self.suit)
+
     @property
     def name(self):
         return self.number.name + self.suit

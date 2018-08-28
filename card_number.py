@@ -13,3 +13,11 @@ class CardNumber:
 
     def __eq__(self, other):
         return self.name == other.name
+
+    def decrease(self, i):
+        value = self.value - i
+        index = value - 2
+        if index<0:
+            return None
+        else:
+            return CardNumber(card_number_names[index])

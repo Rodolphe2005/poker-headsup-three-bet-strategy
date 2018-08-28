@@ -8,3 +8,7 @@ class Hand:
 
     def __eq__(self, other):
         return {self.card1, self.card2} == {other.card1, other.card2}
+
+    @property
+    def cards(self):
+        return [self.card1, self.card2]

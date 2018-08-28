@@ -16,3 +16,7 @@ class Card:
 
     def __eq__(self, other):
         return self.number == other.number and self.suit == other.suit
+
+    @property
+    def name(self):
+        return self.number.name + self.suit

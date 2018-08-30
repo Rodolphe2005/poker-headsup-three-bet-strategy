@@ -8,6 +8,8 @@ from showdown_strengths.straight import straight_of
 
 
 class StraightFlush:
+    ranking = 9
+
     def __init__(self, card: Card):
         self.card = card
 

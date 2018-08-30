@@ -4,6 +4,8 @@ from hand import Hand
 
 
 class Flush:
+    ranking = 6
+
     def __init__(self, cards):
         self.cards = cards
 

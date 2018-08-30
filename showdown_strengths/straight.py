@@ -4,6 +4,8 @@ from hand import Hand
 
 
 class Straight:
+    ranking = 5
+    
     def __init__(self, card_number: CardNumber):
         self.card_number = card_number
 

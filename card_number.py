@@ -8,6 +8,9 @@ class CardNumber:
     def __repr__(self):
         return f'CardNumber({str(self.value)})'
 
+    def __hash__(self):
+        return self.name.__hash__()
+
     def __lt__(self, other):
         return self.value < other.value
 

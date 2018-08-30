@@ -8,8 +8,8 @@ from hand import Hand
 class FourOfAKind:
     ranking = 8
 
-    def __init__(self, kicker: CardNumber):
-        self.kicker = kicker
+    def __init__(self, kicker: str):
+        self.kicker = CardNumber(kicker)
 
     def __repr__(self):
         return f'FourOfAKind({self.kicker.name})'
@@ -25,5 +25,5 @@ def four_of_a_kind_of(hand: Hand, board: Board):
     card_numbers = [card.number for card in cards]
     for card_number, count in Counter(card_numbers).items():
         if count == 4:
-            possible_kickers = [card.number for card in cards if card.number!=card_number]
+            possible_kickers = [card.number.name for card in cards if card.number!=card_number]
             return FourOfAKind(max(possible_kickers))

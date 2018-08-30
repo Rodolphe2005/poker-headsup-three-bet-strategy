@@ -10,8 +10,8 @@ from showdown_strengths.straight import straight_of
 class StraightFlush:
     ranking = 9
 
-    def __init__(self, card: Card):
-        self.card = card
+    def __init__(self, card_name: str):
+        self.card = Card(card_name)
 
     def __lt__(self, other):
         return self.card.number < other.card.number
@@ -27,6 +27,6 @@ def straight_flush_of(hand: Hand, board: Board):
         cards = hand.cards + board.cards
         for card in cards:
             if all(card.decrease(i) in cards for i in range(1, 5)):
-                return StraightFlush(card)
+                return StraightFlush(card.name)
         else:
             return None

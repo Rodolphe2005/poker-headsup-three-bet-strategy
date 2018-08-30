@@ -3,6 +3,7 @@ from showdown_strengths.four_of_a_kind import FourOfAKind
 from showdown_strengths.full_house import FullHouse
 from showdown_strengths.straight_flush import StraightFlush
 from showdown_strengths.straight import Straight
+from showdown_strengths.three_of_a_kind import ThreeOfAKind
 
 showdown_strengths = [
     StraightFlush,

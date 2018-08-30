@@ -6,6 +6,8 @@ from hand import Hand
 
 
 class ThreeOfAKind:
+    ranking = 4
+
     def __init__(self, number, kicker1, kicker2):
         self.number = CardNumber(number)
         self.kicker1 = CardNumber(kicker1)

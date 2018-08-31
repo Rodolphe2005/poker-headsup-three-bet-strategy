@@ -35,7 +35,7 @@ def two_pair_of(hand: Hand, board: Board):
     cards_numbers = [card.number for card in cards]
     counter = Counter(cards_numbers)
     counter_of_occurrences = Counter(counter.values())
-    if counter_of_occurrences == {2: 2, 1: 3}:
+    if counter_of_occurrences == {2: 2, 1: 3} or counter_of_occurrences == {2: 3, 1: 1}:
         pairs = [card_number
                  for card_number, count in counter.items()
                  if count == 2]

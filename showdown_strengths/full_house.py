@@ -25,9 +25,11 @@ class FullHouse:
 def full_house_of(hand: Hand, board: Board):
     cards = hand.cards + board.cards
     counter = Counter([card.number for card in cards])
-    if 2 in counter.values() and 3 in counter.values():
+    if 3 in counter.values():
         possible_trips = [card_number.name for card_number, count in counter.items() if count == 3]
-        possible_pairs = [card_number.name for card_number, count in counter.items() if count == 2]
-        assert len(possible_trips) == 1
-        assert 1 <= len(possible_pairs) <= 2
-        return FullHouse(max(possible_trips), max(possible_pairs))
+        trips_card_name = max(possible_trips)
+        counter2 = Counter([card.number for card in cards if card.name != trips_card_name])
+        if 2 in counter2.values() or 3 in counter2.values():
+            possible_pairs = [card_number.name for card_number, count in counter2.items() if count == 2 or count==3]
+            pair_card_name = max(possible_pairs)
+            return FullHouse(trips_card_name, pair_card_name)

@@ -1,3 +1,4 @@
+from board import Board
 from card import suits, Card
 from card_number import card_number_names
 from random import sample
@@ -20,4 +21,5 @@ class Deck:
         self.cards.remove(card)
 
     def random_board(self):
-        return sample(self.cards, 5)
+        cards = sample(self.cards, 5)
+        return Board(Board.cards_to_name(cards))

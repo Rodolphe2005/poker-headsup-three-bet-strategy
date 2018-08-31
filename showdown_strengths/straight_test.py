@@ -17,3 +17,9 @@ def test_straight_of():
     expected = Straight('Q')
     actual = straight_of(Hand('QhJs'), Board('JhTh9h8h2d'))
     assert expected == actual
+
+
+def test_straight_of_5_high():
+    expected = Straight('5')
+    actual = straight_of(Hand('Ah5c'), Board('3d2s4cThTc'))
+    assert expected == actual

@@ -20,7 +20,10 @@ def straight_of(hand: Hand, board: Board):
     cards = [hand.card1, hand.card2] + board.cards
     card_numbers = [card.number for card in cards]
     for card_number in card_numbers:
-        if all(card_number.decrease(i) in card_numbers for i in range(1, 5)):
-            return Straight(card_number.name)
+        if card_number.value >= 6:
+            if all(card_number.decrease(i) in card_numbers for i in range(1, 5)):
+                return Straight(card_number.name)
+        if all(CardNumber(i) in card_numbers for i in ['2', '3', '4', '5', 'A']):
+            return Straight('5')
     else:
         return None

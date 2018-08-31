@@ -26,7 +26,13 @@ def straight_flush_of(hand: Hand, board: Board):
     else:
         cards = hand.cards + board.cards
         for card in cards:
-            if all(card.decrease(i) in cards for i in range(1, 5)):
-                return StraightFlush(card.name)
+            if card.number.value > 5:
+                if all(card.decrease(i) in cards for i in range(1, 5)):
+                    return StraightFlush(card.name)
+            elif card.number.value == 5:
+                if all(card.decrease(i) in cards for i in range(1, 4)) and Card('A' + card.suit) in cards:
+                    return StraightFlush(card.name)
+            else:
+                continue
         else:
             return None

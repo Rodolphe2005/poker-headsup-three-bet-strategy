@@ -4,6 +4,7 @@ from showdown_strengths.full_house import FullHouse
 from showdown_strengths.straight_flush import StraightFlush
 from showdown_strengths.straight import Straight
 from showdown_strengths.three_of_a_kind import ThreeOfAKind
+from showdown_strengths.two_pair import TwoPair
 
 showdown_strengths = [
     StraightFlush,
@@ -12,7 +13,7 @@ showdown_strengths = [
     Flush,
     Straight,
     ThreeOfAKind,
-    # TwoPair,
+    TwoPair,
     # Pair,
     # HighCard
 ]

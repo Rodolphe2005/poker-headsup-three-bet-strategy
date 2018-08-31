@@ -6,8 +6,8 @@ from hand import Hand
 class Flush:
     ranking = 6
 
-    def __init__(self, cards):
-        self.cards = cards
+    def __init__(self, cards_names):
+        self.cards = [Card(card_name) for card_name in cards_names]
 
     def __repr__(self):
         cards_names = ''.join([card.name for card in self.cards])
@@ -30,4 +30,4 @@ def flush_of(hand: Hand, board: Board):
         cards_of_this_suit = [card for card in cards if card.suit == suit]
         if len(cards_of_this_suit) >= 5:
             sorted_card_numbers = sorted([card.number for card in cards_of_this_suit], reverse=True)
-            return Flush([Card(number.name + suit) for number in sorted_card_numbers])
+            return Flush([number.name + suit for number in sorted_card_numbers])

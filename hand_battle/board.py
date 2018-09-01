@@ -1,4 +1,4 @@
-from card import Card
+from hand_battle.card import Card
 
 
 class Board:

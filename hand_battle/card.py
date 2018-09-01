@@ -1,4 +1,4 @@
-from card_number import CardNumber
+from hand_battle.card_number import CardNumber
 
 suits = ['h', 's', 'd', 'c']
 

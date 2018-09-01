@@ -1,5 +1,5 @@
-from board import Board
-from card import Card
+from hand_battle.board import Board
+from hand_battle.card import Card
 
 
 def test_board_initialization():

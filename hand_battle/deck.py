@@ -1,6 +1,6 @@
-from board import Board
-from card import suits, Card
-from card_number import card_number_names
+from hand_battle.board import Board
+from hand_battle.card import suits, Card
+from hand_battle.card_number import card_number_names
 from random import sample
 
 

@@ -1,5 +1,6 @@
-from card import Card
-from deck import Deck
+from hand_battle.board import Board
+from hand_battle.card import Card
+from hand_battle.deck import Deck
 
 
 def test_deck_initialization():
@@ -19,5 +20,4 @@ def test_card_removal():
 def test_random_board():
     deck = Deck()
     random_board = deck.random_board()
-    assert len(random_board) == 5
-    assert isinstance(random_board[0], Card)
+    assert isinstance(random_board, Board)

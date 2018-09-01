@@ -1,4 +1,4 @@
-from card_number import card_number_names, CardNumber
+from hand_battle.card_number import card_number_names, CardNumber
 
 
 def test_card_number_initialization():

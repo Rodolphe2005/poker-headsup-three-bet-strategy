@@ -1,5 +1,5 @@
-from card import Card, suits
-from card_number import card_number_names
+from hand_battle.card import Card, suits
+from hand_battle.card_number import card_number_names
 
 
 def test_card_initialization():

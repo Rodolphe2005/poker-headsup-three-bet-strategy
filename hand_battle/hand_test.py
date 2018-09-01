@@ -1,5 +1,5 @@
-from card import Card
-from hand import Hand
+from hand_battle.card import Card
+from hand_battle.hand import Hand
 
 
 def test_hand_initialization():

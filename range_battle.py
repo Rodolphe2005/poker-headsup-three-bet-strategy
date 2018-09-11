@@ -40,18 +40,20 @@ def possible_hands():
                 yield card1, card2, possible_suit1
 
 
-for card1, card2, possible_suit1 in [('5', '4', 'o')]:
+for card1, card2, possible_suit1 in possible_hands():
     hand1 = card1 + card2 + possible_suit1
     file_path = 'hands/' + hand1 + '.json'
     if os.path.isfile(file_path):
         continue
+
+    hand_results = {}
+    for card3, card4, possible_suit2 in possible_hands():
+        hand2 = card3 + card4 + possible_suit2
+        battle_name = hand1 + '-' + hand2
+        results = range_battle(battle_name)
+        mean_equity = np.round(np.mean([x['EV'] for x in results.values()]), 3)
+        print(battle_name, mean_equity)
+        hand_results[battle_name] = mean_equity
+
     with open(file_path, 'w') as fp:
-        hand_results = {}
-        for card3, card4, possible_suit2 in possible_hands():
-            hand2 = card3 + card4 + possible_suit2
-            battle_name = hand1 + '-' + hand2
-            results = range_battle(battle_name)
-            mean_equity = np.round(np.mean([x['EV'] for x in results.values()]), 3)
-            print(battle_name, mean_equity)
-            hand_results[battle_name] = mean_equity
         json.dump(hand_results, fp)

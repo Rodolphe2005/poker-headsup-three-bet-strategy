@@ -39,5 +39,4 @@ def offsuit_decomposition(hand):
         for s2 in suits:
             if s1 == s2:
                 continue
-            print(c1 + s1 + c2 + s2)
             yield c1 + s1 + c2 + s2

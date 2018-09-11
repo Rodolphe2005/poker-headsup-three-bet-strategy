@@ -1,4 +1,4 @@
-from range_decomposition import range_decomposition
+from hand_decomposition import range_decomposition
 
 
 def test_pair_decomposition():

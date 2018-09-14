@@ -6,6 +6,8 @@ from pprint import pprint
 
 import numpy as np
 
+from hand import Hand
+
 
 def combos_of(hand_name):
     if len(hand_name) == 2:
@@ -22,11 +24,12 @@ def combos_of(hand_name):
 
 def compute_hands_strengths():
     hand_value = defaultdict(list)
-    for filename in os.listdir('hands/'):
+    dirname = os.path.dirname(__file__)
+    for filename in os.listdir(dirname + '/hands/'):
         if not filename.endswith('.json'):
             continue
         try:
-            with open('hands/' + filename, 'r') as fp:
+            with open(dirname + '/hands/' + filename, 'r') as fp:
                 hand_results = json.load(fp)
                 for range_battle_name, result in hand_results.items():
                     hand1, hand2 = range_battle_name.split('-')
@@ -34,10 +37,9 @@ def compute_hands_strengths():
         except JSONDecodeError:
             print('Problem with ' + filename)
 
-    hand = namedtuple('hand', ['name', 'strength', 'combos', 'frequency'])
 
     hands = [
-        hand(
+        Hand(
             name=name,
             strength=np.round(np.mean(local_strengths), 3),
             combos=combos_of(name),

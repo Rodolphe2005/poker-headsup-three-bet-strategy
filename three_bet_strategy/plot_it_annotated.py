@@ -4,7 +4,7 @@ import plotly.figure_factory as ff
 from hand import Hand
 from three_bet_strategy.call_equity import three_bet_equity, call_equity
 
-hand = Hand(name='82o', combos=16)
+hand = Hand(name='75o', combos=16)
 
 
 def color_number_for(steal, fold_percentage, hand):
@@ -51,9 +51,24 @@ z_value = [
     for s in s_range
 ]
 z_value = adjust_to_color_range(z_value)
+
+def text_of(hand, steal, fold_percentage):
+    three_bet_value = three_bet_equity(
+        hand,
+        steal=steal,
+        fold_percentage=fold_percentage)
+    fold_value = -1
+    call_value = call_equity(hand, steal)
+    if call_value >= -1 and call_value >= three_bet_value:
+        return 'C'
+    elif three_bet_value >= -1 and three_bet_value >= call_value:
+        return '3B'
+    else:
+        return 'F'
+
 z_text = [
     [
-        str(round(color_number_for(steal=s, fold_percentage=f, hand=hand), 2))
+        text_of(hand=hand, steal=s, fold_percentage=f)
         for f in f_range
     ]
     for s in s_range

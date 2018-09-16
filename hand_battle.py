@@ -8,6 +8,11 @@ import numpy as np
 
 possible_cards = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A']
 possible_suits = ['', 'o', 's']
+combos_of = {
+    '': 6,
+    'o': 12,
+    's': 4
+}
 
 
 def hand_battle(two_ranges):
@@ -57,5 +62,3 @@ def generate_json_files():
 
         with open(file_path, 'w') as fp:
             json.dump(hand_results, fp)
-
-generate_json_files()

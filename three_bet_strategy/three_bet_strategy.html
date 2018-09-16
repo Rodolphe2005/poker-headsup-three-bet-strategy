@@ -5,31 +5,63 @@
     <script src="https://d3js.org/d3.v4.js"></script>
 </head>
 <body>
-
+Steal: <input id ="steal" type="range" min="{{min_steal}}" max="{{max_steal}}" value="{{(min_steal+max_steal)//2}}" style="width: 400px; margin-right: 10px;"/>
+<br>
+Fold to 3bet: <input id ="fold_percentage" type="range" min="{{min_fold}}" max="{{max_fold}}" value="{{(min_fold+max_fold)//2}}" style="width: 400px; margin-right: 10px;"/>
 </body>
 </html>
 <script type="text/javascript">
-color = d3.scaleLinear().domain([-2,5])
+rect_size = 50
+gap = 2
+steal_input = d3.select("#steal")
+var steal = steal_input.property("value")
+fold_input = d3.select("#fold_percentage")
+var fold_percentage = fold_input.property("value")
+
+color = d3.scaleLinear().domain([-1,5])
       .interpolate(d3.interpolateHcl)
       .range([d3.rgb("#007AFF"), d3.rgb('#FFF500')]);
 
-    var data = {{data_points | tojson | safe}}
-    svg = d3.select("body").append("svg").attr("width", 800).attr("height", 800)
-    rects = svg
-        .selectAll("rect")
-        .data(data.filter(function(d){return d.i < 14 && d.j < 14;}))
-        .enter()
-        .append("rect")
-        .attr("width", 40)
-        .attr("height", 40)
-        .attr("x", function(d){return d.i*42;})
-        .attr("y", function(d){return d.j*42;})
-        .style("fill", function(d){return color(d.three_bet_value);})
+var data = {{data_points | tojson | safe}}
+svg = d3.select("body").append("svg").attr("width", 800).attr("height", 800)
+rect_with_text_group = svg
+    .selectAll("g")
+    .data(data.filter(function(d){return d.steal == steal && d.fold_percentage == fold_percentage;}))
+    .enter()
+    .append("g")
+    .attr("transform", function(d) { return "translate(" + (rect_size+gap)*d.i + ", " + (rect_size+gap)*d.j + ")"; });
 
-    hands_name = svg
-        .selectAll("text")
-        .data(data.filter(function(d){return d.i < 3 && d.j < 3;}))
-        .enter()
-        .append("text")
-        .text(function(d){return d.name;})
+rects = rect_with_text_group
+    .append("rect")
+    .attr("width", rect_size)
+    .attr("height", rect_size)
+    .style("fill", function(d){return color(d.three_bet_value);})
+
+texts = rect_with_text_group
+    .append("text")
+    .text(function(d){return d.name;})
+    .attr("y", rect_size/2+5)
+    .attr("x", rect_size/2-10)
+    .attr("fill-opacity", function(d){d.three_bet_value < -1 ? 0:1})
+
+rect_with_text_group
+    .style("opacity", function(d){return d.three_bet_value < -1 ? 0:1})
+
+
+steal_input.on("input", function(){
+    steal = steal_input.property("value")
+    rect_with_text_group
+        .data(data.filter(function(d){return d.steal == steal && d.fold_percentage == fold_percentage;}))
+        .select("rect")
+        .style("fill", function(d){return color(d.three_bet_value);})
+})
+
+fold_input.on("input", function(){
+    fold_percentage = fold_input.property("value")
+    rect_with_text_group
+        .data(data.filter(function(d){return d.steal == steal && d.fold_percentage == fold_percentage;}))
+        .select("rect")
+        .style("fill", function(d){return color(d.three_bet_value);})
+})
+
 </script>

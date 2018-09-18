@@ -5,16 +5,22 @@
     <script src="https://d3js.org/d3.v4.js"></script>
 </head>
 <body>
-Steal: <input id ="steal" type="range" min="{{min_steal}}" max="{{max_steal}}" value="{{(min_steal+max_steal)//2}}" style="width: 400px; margin-right: 10px;"/>
+<input id ="steal" type="range" min="{{min_steal}}" max="{{max_steal}}" value="{{(min_steal+max_steal)//2}}" style="width: 400px; margin-right: 10px;"/> Steal <span id="steal_value"></span>
 <br>
-Fold to 3bet: <input id ="fold_percentage" type="range" min="{{min_fold}}" max="{{max_fold}}" value="{{(min_fold+max_fold)//2}}" style="width: 400px; margin-right: 10px;"/>
+<input id ="fold_percentage" type="range" min="{{min_fold}}" max="{{max_fold}}" value="{{(min_fold+max_fold)//2}}" style="width: 400px; margin-right: 10px;"/>Fold to 3bet <span id="fold_value"></span>
+<br>
+<br>
+<br>
+<br>
 </body>
 </html>
 <script type="text/javascript">
 rect_size = 50
 gap = 2
+
 steal_input = d3.select("#steal")
 var steal = steal_input.property("value")
+
 fold_input = d3.select("#fold_percentage")
 var fold_percentage = fold_input.property("value")
 
@@ -50,18 +56,25 @@ rect_with_text_group
 
 steal_input.on("input", function(){
     steal = steal_input.property("value")
+    d3.select("#steal_value").text(steal + '%')
     rect_with_text_group
         .data(data.filter(function(d){return d.steal == steal && d.fold_percentage == fold_percentage;}))
+        .style("opacity", function(d){return d.three_bet_value < -1 ? 0:1})
         .select("rect")
         .style("fill", function(d){return color(d.three_bet_value);})
+
 })
 
 fold_input.on("input", function(){
     fold_percentage = fold_input.property("value")
+    d3.select("#fold_value").text(fold_percentage + '%')
+
     rect_with_text_group
         .data(data.filter(function(d){return d.steal == steal && d.fold_percentage == fold_percentage;}))
+        .style("opacity", function(d){return d.three_bet_value < -1 ? 0:1})
         .select("rect")
         .style("fill", function(d){return color(d.three_bet_value);})
+
 })
 
 </script>

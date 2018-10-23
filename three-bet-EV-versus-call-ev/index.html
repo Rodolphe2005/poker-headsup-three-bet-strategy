@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="https://d3js.org/d3.v5.js"></script>
+</head>
+
+<body>
+    <input id="point_position" type="range" min="0" max="100" value="50" style="width: 400px; margin-right: 10px;" />
+    Position
+    <span id="point_position_value"></span>
+    <br>
+
+    <svg width="800" , height="800"></svg>
+</body>
+
+</html>
+<script type="text/javascript">
+    position_input = d3.select("#point_position")
+    var position = position_input.property("value")
+
+
+
+    var data = [{ 'position': 50 }]
+    svg = d3.select("svg")
+    xscale = d3.scaleLinear().domain([0, 100]).range([0, svg.attr("width")])
+    var points = svg.append("g").attr("class", "points").selectAll("circle")
+        .data(data)
+        .enter()
+        .append("circle")
+
+
+
+
+    points
+        .attr("cx", (d) => xscale(d.position))
+        .attr("cy", 350)
+        .attr("r", 50)
+
+
+    position_input.on("input", function () {
+        position = position_input.property("value")
+        d3.select("#point_position_value").text(position)
+
+        data = [{ 'position': position }]
+        points
+            .data(data)
+            .attr("cx", (d) => xscale(d.position))
+    })
+
+
+</script>

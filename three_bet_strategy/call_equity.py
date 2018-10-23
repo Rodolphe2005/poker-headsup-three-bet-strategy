@@ -1,3 +1,4 @@
+from hand import Hand
 from order_poker_hands import get_top_x_percent_of_hands
 from range_battle import range_battle
 
@@ -18,14 +19,16 @@ def fold_equity():
 
 def three_bet_equity(hand, steal, fold_percentage):
     # If he folds, we win 2.5
-    equity = fold_percentage / 100 * raise_size
+    fold_equity = fold_percentage / 100 * raise_size
 
     # If he calls
     # TODO Remove the top percent that corresponds to his 4Bet range
     sb_call_range = list(get_top_x_percent_of_hands(steal * (100 - fold_percentage) / 100))
     equity_on_the_flop = range_battle([hand], sb_call_range)
-    equity += (100 - fold_percentage - four_bet_percentage) / 100 * (2 * three_bet_size * equity_on_the_flop - three_bet_size)
+    call_equity = (100 - fold_percentage - four_bet_percentage) / 100 * (2 * three_bet_size * equity_on_the_flop - three_bet_size)
 
     # If he 4bets, we suppose that we always fold
-    equity -= four_bet_percentage/100 * three_bet_size
-    return equity
+    four_bet_equity = four_bet_percentage/100 * -three_bet_size
+    return fold_equity + call_equity + four_bet_equity
+
+print(three_bet_equity(Hand('QTo', combos=16), steal=50, fold_percentage=25))

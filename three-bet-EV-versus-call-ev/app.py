@@ -1,11 +1,16 @@
-from flask import Flask, json
+from flask import Flask, json, jsonify, request
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 
-@app.route("/")
+@app.route("/", methods=["POST"])
 def hello():
-    return json.dumps([{"position": 30}])
+    response = jsonify([{"position": request.json['position']}])
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
-app.run()
+if __name__ == 'main':
+    app.run()

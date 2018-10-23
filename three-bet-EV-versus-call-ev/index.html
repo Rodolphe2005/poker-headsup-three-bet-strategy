@@ -20,24 +20,18 @@
     position_input = d3.select("#point_position")
     var position = position_input.property("value")
 
-
-
     var data = [{ 'position': 50 }]
     svg = d3.select("svg")
-    xscale = d3.scaleLinear().domain([0, 100]).range([0, svg.attr("width")])
     var points = svg.append("g").attr("class", "points").selectAll("circle")
         .data(data)
         .enter()
         .append("circle")
 
-
-
-
+    xscale = d3.scaleLinear().domain([0, 100]).range([0, svg.attr("width")])
     points
         .attr("cx", (d) => xscale(d.position))
         .attr("cy", 350)
         .attr("r", 50)
-
 
     position_input.on("input", function () {
         position = position_input.property("value")

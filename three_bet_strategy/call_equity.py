@@ -10,7 +10,7 @@ four_bet_percentage = 10
 def call_equity(hand, steal):
     sb_range = list(get_top_x_percent_of_hands(steal))
     equity_on_the_flop = range_battle([hand], sb_range)
-    return 2 * raise_size * equity_on_the_flop - raise_size
+    return 2 * raise_size * (equity_on_the_flop*0.9) - raise_size
 
 
 def fold_equity():

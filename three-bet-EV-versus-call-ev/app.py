@@ -7,7 +7,11 @@ CORS(app)
 
 @app.route("/", methods=["POST"])
 def hello():
-    response = jsonify([{"position": request.json['position']}])
+    response = jsonify([
+        {"x": request.json['position'],
+         "y": request.json['position'],
+         "hand": "54s"}
+    ])
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 

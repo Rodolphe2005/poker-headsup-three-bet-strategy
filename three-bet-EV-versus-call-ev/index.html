@@ -13,7 +13,7 @@
     <span id="point_position_value"></span>
     <br>
 
-    <svg width="800" , height="800"></svg>
+    <svg width="800" height="800"></svg>
 </body>
 
 </html>
@@ -21,18 +21,19 @@
     position_input = d3.select("#point_position")
     var position = position_input.property("value")
 
-    var data = [{ 'position': 50 }]
+    var data = [{ 'x': 50, 'y': 50, 'hand': '54s' }]
     svg = d3.select("svg")
-    var points = svg.append("g").attr("class", "points").selectAll("circle")
+    var points = svg.append("g").attr("class", "points").selectAll("text")
         .data(data)
         .enter()
-        .append("circle")
+        .append("text")
 
     xscale = d3.scaleLinear().domain([0, 100]).range([0, svg.attr("width")])
+    yscale = d3.scaleLinear().domain([0, 100]).range([svg.attr("height"), 0])
     points
-        .attr("cx", (d) => xscale(d.position))
-        .attr("cy", 350)
-        .attr("r", 50)
+        .attr("x", (d) => xscale(d.x))
+        .attr("y", (d) => yscale(d.y))
+        .text((d) => d.hand)
 
     position_input.on("input", function () {
         position = position_input.property("value")
@@ -41,7 +42,7 @@
         d3.json('http://127.0.0.1:5000/', {
             method: "POST",
             body: JSON.stringify({
-                position: position
+                position: position,
             }),
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -52,7 +53,9 @@
             data = response
             points
                 .data(data)
-                .attr("cx", (d) => xscale(d.position))
+                .attr("x", (d) => xscale(d.x))
+                .attr("y", (d) => yscale(d.y))
+                .text((d) => d.hand)
         })
     })
 

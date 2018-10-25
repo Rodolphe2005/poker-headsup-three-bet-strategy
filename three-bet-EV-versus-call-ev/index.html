@@ -18,48 +18,53 @@
     <span id="fold3bet_value"></span>
     <br>
 
+    <input id="fourbet" type="range" min="0" max="100" value="10" style="width: 400px; margin-right: 10px;" />
+    4bet
+    <span id="fourbet_value"></span>
+    <br>
+
     <svg width="800" height="800"></svg>
 </body>
 
 </html>
 <script type="text/javascript">
+    drawAxis = () => {
+        svg
+            .append('line')
+            .attr('x1', xscale(0))
+            .attr('y1', yscale(0))
+            .attr('x2', xscale(ev_max))
+            .attr('y2', yscale(ev_max))
+            .attr('stroke', '#000000')
+
+        svg
+            .append('line')
+            .attr('x1', xscale(ev_min))
+            .attr('y1', yscale(0))
+            .attr('x2', xscale(0))
+            .attr('y2', yscale(0))
+            .attr('stroke', '#000000')
+
+        svg
+            .append('line')
+            .attr('x1', xscale(0))
+            .attr('y1', yscale(ev_min))
+            .attr('x2', xscale(0))
+            .attr('y2', yscale(0))
+            .attr('stroke', '#000000')
+    }
+
     const ev_min = -2
     const ev_max = 3
     svg = d3.select("svg")
     xscale = d3.scaleLinear().domain([ev_min, ev_max]).range([0, svg.attr("width")])
     yscale = d3.scaleLinear().domain([ev_min, ev_max]).range([svg.attr("height"), 0])
 
-    svg
-        .append('line')
-        .attr('x1', xscale(0))
-        .attr('y1', yscale(0))
-        .attr('x2', xscale(ev_max))
-        .attr('y2', yscale(ev_max))
-        .attr('stroke', '#000000')
+    drawAxis()
 
-    svg
-        .append('line')
-        .attr('x1', xscale(ev_min))
-        .attr('y1', yscale(0))
-        .attr('x2', xscale(0))
-        .attr('y2', yscale(0))
-        .attr('stroke', '#000000')
-
-    svg
-        .append('line')
-        .attr('x1', xscale(0))
-        .attr('y1', yscale(ev_min))
-        .attr('x2', xscale(0))
-        .attr('y2', yscale(0))
-        .attr('stroke', '#000000')
-
-
-    steal_input = d3.select("#steal")
-    var steal = steal_input.property("value")
-
-    fold3bet_input = d3.select("#fold3bet")
-    var fold3bet = fold3bet_input.property("value")
-
+    for (slider of ['steal', 'fold3bet', 'fourbet']) {
+        d3.select("#" + slider).on("input", () => update_graph())
+    }
 
     var data = [
         {}, {}]
@@ -75,17 +80,23 @@
         .attr("y", (d) => yscale(d.y))
         .text((d) => d.hand)
 
+    var update_field = (id) => {
+        d3.select("#" + id + "_value").text(value_of(id) + '%')
+    }
+
+    var value_of = (id) => d3.select("#" + id).property("value")
+
     var update_graph = () => {
-        steal = steal_input.property("value")
-        fold3bet = fold3bet_input.property("value")
-        d3.select("#steal_value").text(steal)
-        d3.select("#fold3bet_value").text(fold3bet)
+        update_field('steal')
+        update_field('fold3bet')
+        update_field('fourbet')
 
         d3.json('http://127.0.0.1:5000/', {
             method: "POST",
             body: JSON.stringify({
-                steal: steal,
-                fold3bet: fold3bet
+                steal: value_of('steal'),
+                fold3bet: value_of('fold3bet'),
+                fourbet: value_of('fourbet')
             }),
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
@@ -99,15 +110,12 @@
                 .attr("x", (d) => xscale(d.x))
                 .attr("y", (d) => yscale(d.y))
                 .text((d) => d.hand)
+                .attr("text-anchor", "middle")
+                .attr("dominant-baseline", "central")
         })
     }
 
-    steal_input.on("input", function () {
-        update_graph()
-    })
-    fold3bet_input.on("input", function () {
-        update_graph()
-    })
+
 
 
 </script>

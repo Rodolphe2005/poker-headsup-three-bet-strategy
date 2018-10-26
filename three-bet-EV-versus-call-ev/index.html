@@ -17,17 +17,32 @@
 
                 <input id="steal" type="range" min="40" max="100" value="50" style="width: 400px; margin-right: 10px;" />
                 Steal
-                <span id="steal_value"></span>
+                <span id="steal_value"></span>%
                 <br>
 
                 <input id="fold3bet" type="range" min="0" max="100" value="50" style="width: 400px; margin-right: 10px;" />
                 Fold to 3bet
-                <span id="fold3bet_value"></span>
+                <span id="fold3bet_value"></span>%
                 <br>
 
                 <input id="fourbet" type="range" min="0" max="50" value="15" style="width: 400px; margin-right: 10px;" />
                 4bet
-                <span id="fourbet_value"></span>
+                <span id="fourbet_value"></span>%
+                <br>
+
+                <input id="oop_penalty" type="range" min="0" max="50" value="15" style="width: 400px; margin-right: 10px;" />
+                OOP Penalty
+                <span id="oop_penalty_value"></span>%
+                <br>
+
+                <input id="steal_size" type="range" min="2" max="3" value="2.5" step="0.25" style="width: 400px; margin-right: 10px;" />
+                Steal size
+                <span id="steal_size_value"></span>
+                <br>
+
+                <input id="threebet_size" type="range" min="6" max="11" value="7.5" step="0.5" style="width: 400px; margin-right: 10px;" />
+                3bet size
+                <span id="threebet_size_value"></span>
                 <br>
 
             </td>
@@ -45,7 +60,7 @@
 
 
     var value_of = (id) => d3.select("#" + id).property("value")
-    fields = ['steal', 'fold3bet', 'fourbet']
+    fields = ['steal', 'fold3bet', 'fourbet', 'oop_penalty', 'steal_size', 'threebet_size']
     fields_values = () => fields.reduce((obj, field) => Object.assign(obj, { [field]: value_of(field) }), {})
 
     drawAxis = () => {
@@ -98,7 +113,7 @@
         }
     }
     var update_field = (id) => {
-        d3.select("#" + id + "_value").text(value_of(id) + '%')
+        d3.select("#" + id + "_value").text(value_of(id))
     }
 
 

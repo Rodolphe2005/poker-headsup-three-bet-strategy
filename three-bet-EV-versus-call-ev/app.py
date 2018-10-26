@@ -16,6 +16,8 @@ def hello():
     response = jsonify([
         equities_of('84o', steal, fold3bet, fourbet),
         equities_of('T5s', steal, fold3bet, fourbet),
+        equities_of('JTo', steal, fold3bet, fourbet),
+        equities_of('22', steal, fold3bet, fourbet),
     ])
     response.headers.add('Access-Control-Allow-Origin', '*')
     print(response.json)

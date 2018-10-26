@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <input id="steal" type="range" min="0" max="100" value="50" style="width: 400px; margin-right: 10px;" />
+    <input id="steal" type="range" min="40" max="100" value="50" style="width: 400px; margin-right: 10px;" />
     Steal
     <span id="steal_value"></span>
     <br>
@@ -18,7 +18,7 @@
     <span id="fold3bet_value"></span>
     <br>
 
-    <input id="fourbet" type="range" min="0" max="100" value="10" style="width: 400px; margin-right: 10px;" />
+    <input id="fourbet" type="range" min="0" max="50" value="15" style="width: 400px; margin-right: 10px;" />
     4bet
     <span id="fourbet_value"></span>
     <br>
@@ -28,6 +28,10 @@
 
 </html>
 <script type="text/javascript">
+    var value_of = (id) => d3.select("#" + id).property("value")
+    fields = ['steal', 'fold3bet', 'fourbet']
+    fields_values = () => fields.reduce((obj, field) => Object.assign(obj, { [field]: value_of(field) }), {})
+
     drawAxis = () => {
         svg
             .append('line')
@@ -62,51 +66,40 @@
 
     drawAxis()
 
-    for (slider of ['steal', 'fold3bet', 'fourbet']) {
+    for (slider of fields) {
         d3.select("#" + slider).on("input", () => update_graph())
     }
 
-    var data = [
-        {}, {}]
+    var hands = svg.append("g").attr("class", "hands")
 
-    var hands = svg.append("g").attr("class", "hands").selectAll("text")
-        .data(data)
-        .enter()
-        .append("text")
-
-
-    hands
-        .attr("x", (d) => xscale(d.x))
-        .attr("y", (d) => yscale(d.y))
-        .text((d) => d.hand)
-
+    var update_all_fields = () => {
+        for (field of fields) {
+            update_field(field)
+        }
+    }
     var update_field = (id) => {
         d3.select("#" + id + "_value").text(value_of(id) + '%')
     }
 
-    var value_of = (id) => d3.select("#" + id).property("value")
+
 
     var update_graph = () => {
-        update_field('steal')
-        update_field('fold3bet')
-        update_field('fourbet')
+        update_all_fields()
 
         d3.json('http://127.0.0.1:5000/', {
             method: "POST",
-            body: JSON.stringify({
-                steal: value_of('steal'),
-                fold3bet: value_of('fold3bet'),
-                fourbet: value_of('fourbet')
-            }),
+            body: JSON.stringify(fields_values()),
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
             }
         }
-        ).then(response => {
-            console.log(response)
-            data = response
-            hands
-                .data(data)
+        ).then(data => {
+            new_hands = hands.selectAll("text").data(data)
+            new_hands
+                .enter()
+                .append("text")
+
+            new_hands
                 .attr("x", (d) => xscale(d.x))
                 .attr("y", (d) => yscale(d.y))
                 .text((d) => d.hand)

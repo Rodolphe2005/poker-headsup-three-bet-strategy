@@ -8,26 +8,42 @@
 </head>
 
 <body>
-    <input id="steal" type="range" min="40" max="100" value="50" style="width: 400px; margin-right: 10px;" />
-    Steal
-    <span id="steal_value"></span>
-    <br>
+    <table>
+        <tr>
+            <td width="650">
+                <svg width="650" height="650"></svg>
+            </td>
+            <td>
 
-    <input id="fold3bet" type="range" min="0" max="100" value="50" style="width: 400px; margin-right: 10px;" />
-    Fold to 3bet
-    <span id="fold3bet_value"></span>
-    <br>
+                <input id="steal" type="range" min="40" max="100" value="50" style="width: 400px; margin-right: 10px;" />
+                Steal
+                <span id="steal_value"></span>
+                <br>
 
-    <input id="fourbet" type="range" min="0" max="50" value="15" style="width: 400px; margin-right: 10px;" />
-    4bet
-    <span id="fourbet_value"></span>
-    <br>
+                <input id="fold3bet" type="range" min="0" max="100" value="50" style="width: 400px; margin-right: 10px;" />
+                Fold to 3bet
+                <span id="fold3bet_value"></span>
+                <br>
 
-    <svg width="800" height="800"></svg>
+                <input id="fourbet" type="range" min="0" max="50" value="15" style="width: 400px; margin-right: 10px;" />
+                4bet
+                <span id="fourbet_value"></span>
+                <br>
+
+            </td>
+
+        </tr>
+    </table>
+
+
 </body>
 
 </html>
 <script type="text/javascript">
+    const ev_min = -1
+    const ev_max = 2
+
+
     var value_of = (id) => d3.select("#" + id).property("value")
     fields = ['steal', 'fold3bet', 'fourbet']
     fields_values = () => fields.reduce((obj, field) => Object.assign(obj, { [field]: value_of(field) }), {})
@@ -58,9 +74,13 @@
             .attr('stroke', '#000000')
     }
 
-    const ev_min = -2
-    const ev_max = 3
+
     svg = d3.select("svg")
+    var div = svg.append("g")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+    var callev = div.append("text").attr("class", "callEV")
+    var threebetev = div.append("text").attr("class", "threebetEV")
     xscale = d3.scaleLinear().domain([ev_min, ev_max]).range([0, svg.attr("width")])
     yscale = d3.scaleLinear().domain([ev_min, ev_max]).range([svg.attr("height"), 0])
 
@@ -105,6 +125,22 @@
                 .text((d) => d.hand)
                 .attr("text-anchor", "middle")
                 .attr("dominant-baseline", "central")
+                .on("mouseover", function (d) {
+                    div.transition()
+                        .duration(200)
+                        .style("opacity", .9);
+                    callev.text("Call - Fold = " + d3.format(".1f")(100 * d.x) + "bb/100")
+                        .attr("x", d3.event.pageX)
+                        .attr("y", d3.event.pageY + 20);
+                    threebetev.text("3bet - Fold = " + d3.format(".1f")(100 * d.y) + "bb/100")
+                        .attr("x", d3.event.pageX)
+                        .attr("y", d3.event.pageY + 40);
+                })
+                .on("mouseout", function (d) {
+                    div.transition()
+                        .duration(500)
+                        .style("opacity", 0);
+                });
         })
     }
 
